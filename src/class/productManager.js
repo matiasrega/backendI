@@ -14,6 +14,11 @@ class ProductManager {
     return [...this.productList];
   }
 
+  async getProductById(id) {
+    await this.getProductList();
+    return this.productList.find((product) => product.id == id);
+  }
+
   updateNewId() {
     const maxId = this.productList.reduce(
       (max, product) => (product.id > max ? product.id : max),

@@ -43,19 +43,17 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:pid", async (req, res) => {
-  const productId = parseInt(req.params.pid);
-
   try {
-    const productList = await productManager.getProductList();
-    const product = productList.find((p) => p.id === productId);
+    const { pid } = req.params;
+    const productFinded = await productManager.getProductById(pid);
 
-    if (!product) {
+    if (!productFinded) {
       return res.status(404).json({ error: "Producto no encontrado." });
     }
-
-    res.status(200).json(product);
+    //console.log(productFinded);
+    res.status(200).json({ resultado: productFinded });
   } catch (error) {
-    console.error("Error al obtener el producto:", error);
+    //console.log("Error al obtener el producto:");
     res.status(500).json({ error: "Error interno al obtener el producto." });
   }
 });
@@ -101,20 +99,23 @@ router.put("/:pid", async (req, res) => {
 });
 
 router.delete("/:pid", async (req, res) => {
-  const { pid } = req.params;
+  try {
+    const { pid } = req.params;
+    const productToDelete = await productManager.getProductById(pid);
 
-  await productManager.getProductList();
-
-  const index = productManager.productList.findIndex(
-    (product) => product.id === parseInt(pid)
-  );
-
-  if (index === -1) {
-    return res.status(404).json({ error: "Producto no encontrado." });
+    if (!productToDelete) {
+      return res.status(404).json({ error: "Producto no encontrado." });
+    }
+    productManager.productList = productManager.productList.filter(
+      (product) => product.id !== parseInt(pid)
+    );
+    await productManager.saveProductListChange();
+    res
+      .status(200)
+      .json({ message: "Producto eliminado correctamente", productToDelete });
+  } catch (error) {
+    res.status(500).json({ error: "Error interno al eliminar el producto." });
   }
-  productManager.productList.splice(index, 1);
-  await productManager.saveProductListChange();
-  res.status(200).json({ message: "Producto eliminado correctamente" });
 });
 
 export default router;
