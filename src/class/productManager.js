@@ -36,11 +36,12 @@ class ProductManager {
       thumbnails: product.thumbnails || [],
     };
     this.productList.push(newProduct);
-    await fs.writeFile(
-      this.path,
-      JSON.stringify({ data: this.productList }, null, 2)
-    );
+    await this.saveProductListChange();
     return newProduct;
+  }
+
+  async saveProductListChange() {
+    await fs.writeFile(this.path, JSON.stringify({ data: this.productList }));
   }
 }
 
