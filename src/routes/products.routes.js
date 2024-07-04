@@ -37,6 +37,27 @@ router.post("/", async (req, res) => {
   }
 });
 
-//router.get("/api/products", () => {});
+router.get("/", async (req, res) => {
+  const productList = await productManager.getProductList();
+  res.status(200).json(productList);
+});
+
+router.get("/:pid", async (req, res) => {
+  const productId = parseInt(req.params.pid);
+
+  try {
+    const productList = await productManager.getProductList();
+    const product = productList.find((p) => p.id === productId);
+
+    if (!product) {
+      return res.status(404).json({ error: "Producto no encontrado." });
+    }
+
+    res.status(200).json(product);
+  } catch (error) {
+    console.error("Error al obtener el producto:", error);
+    res.status(500).json({ error: "Error interno al obtener el producto." });
+  }
+});
 
 export default router;
