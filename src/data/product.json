@@ -1,1 +1,85 @@
-{"data":[[[{}],{}]]}
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "Producto de prueba",
+      "description": "Descripción del producto",
+      "code": "PROD001",
+      "price": 19.99,
+      "status": true,
+      "stock": 10,
+      "category": "Electrónica",
+      "thumbnails": []
+    },
+    {
+      "id": 2,
+      "title": "Smartphone Galaxy S22",
+      "description": "Último modelo de smartphone Galaxy con características avanzadas.",
+      "code": "SM-GS22",
+      "price": 999.99,
+      "status": true,
+      "stock": 50,
+      "category": "Electrónica",
+      "thumbnails": [
+        "galaxy-s22-front.jpg",
+        "galaxy-s22-back.jpg"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Smartphone Galaxy S22",
+      "description": "Último modelo de smartphone Galaxy con características avanzadas.",
+      "code": "SM-GS22",
+      "price": 999.99,
+      "status": true,
+      "stock": 50,
+      "category": "Electrónica",
+      "thumbnails": [
+        "galaxy-s22-front.jpg",
+        "galaxy-s22-back.jpg"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Smartphone Galaxy S22",
+      "description": "Último modelo de smartphone Galaxy con características avanzadas.",
+      "code": "SM-GS22",
+      "price": 999.99,
+      "status": true,
+      "stock": 50,
+      "category": "Electrónica",
+      "thumbnails": [
+        "galaxy-s22-front.jpg",
+        "galaxy-s22-back.jpg"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Smartphone Galaxy S22",
+      "description": "Último modelo de smartphone Galaxy con características avanzadas.",
+      "code": "SM-GS22",
+      "price": 999.99,
+      "status": true,
+      "stock": 50,
+      "category": "Electrónica",
+      "thumbnails": [
+        "galaxy-s22-front.jpg",
+        "galaxy-s22-back.jpg"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Smartphone Galaxy S22",
+      "description": "Último modelo de smartphone Galaxy con características avanzadas.",
+      "code": "SM-GS22",
+      "price": 999.99,
+      "status": true,
+      "stock": 50,
+      "category": "Electrónica",
+      "thumbnails": [
+        "galaxy-s22-front.jpg",
+        "galaxy-s22-back.jpg"
+      ]
+    }
+  ]
+}

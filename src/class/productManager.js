@@ -8,14 +8,18 @@ class ProductManager {
   }
 
   async getProductList() {
-    const list = await fs.promises.readFile(this.path, "utf-8");
-    this.productList = [...JSON.parse(list).data];
+    const data = await fs.readFile(this.path, "utf-8");
+    this.productList = JSON.parse(data).data;
+    this.updateNewId();
+    return [...this.productList];
+  }
+
+  updateNewId() {
     const maxId = this.productList.reduce(
       (max, product) => (product.id > max ? product.id : max),
       0
     );
     this.newId = maxId + 1;
-    return [...this.productList];
   }
 
   async addProduct(product) {
@@ -32,10 +36,11 @@ class ProductManager {
       thumbnails: product.thumbnails || [],
     };
     this.productList.push(newProduct);
-    await fs.promises.writeFile(
+    await fs.writeFile(
       this.path,
-      JSON.stringify({ data: [this.productList] })
+      JSON.stringify({ data: this.productList }, null, 2)
     );
+    return newProduct;
   }
 }
 
