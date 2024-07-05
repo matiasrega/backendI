@@ -1,9 +1,15 @@
 import fs from "node:fs/promises";
 
-export class CartManager {
+class CartManager {
   constructor(path) {
     this.path = path;
     this.carts = [];
+  }
+
+  async getCarts() {
+    const data = await fs.readFile(this.path, "utf-8");
+    this.carts = JSON.parse(data).data;
+    return this.carts;
   }
 
   async addProductToCart(id, productId) {
