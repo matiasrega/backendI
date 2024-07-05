@@ -58,44 +58,19 @@ router.get("/:pid", async (req, res) => {
   }
 });
 
-router.put("/:pid", async (req, res) => {
-  const { pid } = req.params;
-  const { title, description, code, price, stock, category, thumbnails } =
-    req.body;
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const updatedProduct = req.body;
 
-  if (!title || !description || !code || !price || !stock || !category) {
-    return res
-      .status(400)
-      .json({ error: "Todos los campos son obligatorios." });
+  try {
+    const product = await productManager.updateProductById(id, updatedProduct);
+    res
+      .status(200)
+      .json({ message: "Producto actualizado correctamente", product });
+  } catch (error) {
+    console.error("Error al actualizar producto:", error);
+    res.status(500).json({ error: "Error interno al actualizar producto." });
   }
-
-  const productList = await productManager.getProductList();
-  const index = productList.findIndex(
-    (product) => product.id === parseInt(pid)
-  );
-
-  if (index === -1) {
-    return res.status(404).json({ error: "Producto no encontrado." });
-  }
-
-  const updatedProduct = {
-    id: productList[index].id,
-    title: title || productList[index].title,
-    description: description || productList[index].description,
-    code: code || productList[index].code,
-    price: price || productList[index].price,
-    status: productList[index].status,
-    stock: stock || productList[index].stock,
-    category: category || productList[index].category,
-    thumbnails: thumbnails || productList[index].thumbnails,
-  };
-
-  productList[index] = updatedProduct;
-  await productManager.saveProductListChange();
-
-  res
-    .status(200)
-    .json({ message: "Producto actualizado correctamente", updatedProduct });
 });
 
 router.delete("/:pid", async (req, res) => {
