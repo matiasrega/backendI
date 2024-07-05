@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/products", ProductRoute);
-app.use("/api/cart", CartRoute);
+app.use("/api/carts", CartRoute);
 
 app.listen(8080, () => {
   console.log("Servidor dado de alta");
