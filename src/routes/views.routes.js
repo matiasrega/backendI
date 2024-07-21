@@ -10,9 +10,6 @@ router.get("/", async (req, res) => {
   const productList = await productManager.getProductList();
   res.render("home", { productList });
   //console.log(productList);
-
-  // Emitir evento "productList" solo cuando se actualice la lista de productos
-  //socketServer.emit("productList", productList);
 });
 
 export default router;

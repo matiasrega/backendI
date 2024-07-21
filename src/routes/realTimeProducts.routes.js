@@ -1,6 +1,4 @@
 import { Router } from "express";
-//import { socketServer } from "../app.js";
-//import { __dirname } from "../utils.js";
 
 const router = Router();
 

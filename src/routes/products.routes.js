@@ -41,7 +41,6 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => {
   const productList = await productManager.getProductList();
   res.status(200).json(productList);
-  //socketServer.emit("productList", productList);
 });
 
 router.get("/:pid", async (req, res) => {

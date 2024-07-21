@@ -5,45 +5,62 @@ const realTimeProductContainer = document.querySelector(
 );
 
 socket.on("realTimeProducts", (data) => {
-  //console.log("Datos recibidos del servidor:", data);
-
   realTimeProductContainer.innerHTML = "";
+
   data.forEach((product) => {
     const div = document.createElement("div");
     div.classList.add(`${product.id}`, `cart`);
+
     const id = document.createElement("p");
     id.classList.add(`tag`);
-    id.innerText = id.title;
+    id.innerText = product.id;
+
     const title = document.createElement("p");
-    title.classList.add(`tag`);
+    title.classList.add(`title`);
     title.innerText = product.title;
+
     const description = document.createElement("p");
     description.innerText = "Descripción: " + product.description;
+
     const code = document.createElement("p");
-    code.innerText = "Codigo: " + product.code;
+    code.innerText = "Código: " + product.code;
+
     const price = document.createElement("p");
     price.innerText = "Precio: $" + product.price;
+
     const stock = document.createElement("p");
     stock.innerText = "Stock: " + product.stock;
-    const category = document.createElement("p");
-    category.innerText = "Categoria: " + product.category;
-    const deleteButton = document.createElement("button");
-    deleteButton.innerText = "Eliminar";
-    deleteButton.classList.add("deleteButton");
 
-    deleteButton.addEventListener("click", () => {
-      // Aquí puedes emitir un evento al servidor para eliminar el producto
-      socket.emit("deleteProduct", product.id); // Asumiendo que `product.id` es el identificador único del producto
+    const category = document.createElement("p");
+    category.innerText = "Categoría: " + product.category;
+
+    const deleteButtonOne = document.createElement("button");
+    deleteButtonOne.innerText = "Eliminar Uno";
+    deleteButtonOne.classList.add("deleteButton");
+    deleteButtonOne.addEventListener("click", () => {
+      socket.emit("deleteProduct", product.id);
     });
 
-    div.appendChild(id);
+    const deleteButtonAll = document.createElement("button");
+    deleteButtonAll.innerText = "Eliminar Todos";
+    deleteButtonAll.classList.add("deleteButton");
+    deleteButtonAll.addEventListener("click", () => {
+      socket.emit("deleteAllProduct", product.id);
+    });
+
+    const buttonContainer = document.createElement("div");
+    buttonContainer.classList.add("button-container");
+    buttonContainer.appendChild(deleteButtonOne);
+    buttonContainer.appendChild(deleteButtonAll);
+
     div.appendChild(title);
     div.appendChild(description);
     div.appendChild(code);
     div.appendChild(price);
     div.appendChild(stock);
     div.appendChild(category);
-    div.appendChild(deleteButton);
+    div.appendChild(buttonContainer);
+
     realTimeProductContainer.appendChild(div);
   });
 });

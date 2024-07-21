@@ -49,13 +49,36 @@ class ProductManager {
     await fs.writeFile(this.path, JSON.stringify({ data: this.productList }));
   }
 
-  async deleteProductById(id) {
+  async deleteAllProductById(id) {
     await this.getProductList();
     const initialLength = this.productList.length;
     this.productList = this.productList.filter((product) => product.id != id);
     if (this.productList.length < initialLength) {
       await this.saveProductListChange();
       return true; // Indicar que se eliminó correctamente
+    } else {
+      throw new Error("Producto no encontrado");
+    }
+  }
+
+  async deleteProductById(id) {
+    await this.getProductList();
+    const productIndex = this.productList.findIndex(
+      (product) => product.id == id
+    );
+
+    if (productIndex !== -1) {
+      const product = this.productList[productIndex];
+
+      if (product.stock > 1) {
+        product.stock--;
+      } else {
+        this.productList.splice(productIndex, 1);
+      }
+
+      await this.saveProductListChange();
+
+      return { id: product.id, stock: product.stock };
     } else {
       throw new Error("Producto no encontrado");
     }
