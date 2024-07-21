@@ -46,4 +46,8 @@ socketServer.on("connection", async (socket) => {
     await productManager.addProduct(product);
     socketServer.emit("reatTimeProducts", productList);
   });
+  socket.on("deleteProduct", async (product) => {
+    await productManager.deleteProductById(product);
+    socketServer.emit("reatTimeProducts", productList);
+  });
 });

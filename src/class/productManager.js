@@ -49,6 +49,18 @@ class ProductManager {
     await fs.writeFile(this.path, JSON.stringify({ data: this.productList }));
   }
 
+  async deleteProductById(id) {
+    await this.getProductList();
+    const initialLength = this.productList.length;
+    this.productList = this.productList.filter((product) => product.id != id);
+    if (this.productList.length < initialLength) {
+      await this.saveProductListChange();
+      return true; // Indicar que se eliminó correctamente
+    } else {
+      throw new Error("Producto no encontrado");
+    }
+  }
+
   async updateProductById(id, updatedProduct) {
     await this.getProductList();
     const index = this.productList.findIndex((product) => product.id == id);
