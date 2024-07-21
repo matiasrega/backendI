@@ -83,6 +83,12 @@ const addProduct = () => {
   }
 
   const info = { title, description, price, code, stock, category };
+  Swal.fire({
+    icon: "success",
+    title: "Producto agregado con éxito",
+    showConfirmButton: false,
+    timer: 1000,
+  });
   socket.emit("newProduct", info);
 
   document.getElementById("title").value = "";
