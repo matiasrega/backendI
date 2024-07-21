@@ -1,4 +1,18 @@
-<div><h1>HOLA PUTOS</h1>
+<link rel="stylesheet" href="./css/sytle.css" />
+<div>
+  <h1>Lista de Productos</h1>
+  <ul class="product-list">
+    {{#each productList}}
+      <li class="product-card">
+        <strong>{{this.title}}</strong>
+        <p class="tag">Descripción:</p><p>{{this.description}}</p>
+        <p class="tag">Categoría:</p><p>{{this.category}}</p>
+        <p class="tag">Precio:</p><p> ${{this.price}}</p>
+        <p class="tag">Stock:</p><p> {{this.stock}}</p>
+      </li>
+    {{/each}}
+  </ul>
 </div>
-<script src="/socket.io/socket.io.js"></script>;
+
+<script src="/socket.io/socket.io.js"></script>
 <script src="./js/index.js"></script>

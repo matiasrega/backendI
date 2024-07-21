@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { __dirname } from "../utils.js";
 import ProductManager from "../class/productManager.js";
+//import { socketServer } from "../app.js";
 
 console.log(__dirname);
 const router = Router();
@@ -40,6 +41,7 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => {
   const productList = await productManager.getProductList();
   res.status(200).json(productList);
+  //socketServer.emit("productList", productList);
 });
 
 router.get("/:pid", async (req, res) => {

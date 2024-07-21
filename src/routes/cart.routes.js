@@ -42,4 +42,5 @@ router.post("/:cid/product/:pid", async (req, res) => {
       .json({ error: "Error interno al agregar producto al carrito" });
   }
 });
+
 export default router;
