@@ -1,13 +1,21 @@
-div {
+/* Estilos generales para la página */
+.home,
+.realTimeProducts,
+.addForm {
   font-family: Arial, sans-serif;
   background-color: #f0f0f0;
   padding: 20px;
 }
 
-h1 {
+/* Encabezados */
+h1,
+h2 {
   color: #333;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
+/* Lista de productos */
 .product-list {
   list-style-type: none;
   padding: 0;
@@ -16,6 +24,7 @@ h1 {
   justify-content: space-between;
 }
 
+/* Tarjetas de producto */
 .product-card {
   width: calc(25% - 20px);
   background-color: #fff;
@@ -25,8 +34,87 @@ h1 {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+/* Etiquetas */
 .tag {
   font-weight: bold;
   color: #666;
   margin-right: 5px;
+}
+
+/* Contenedor principal */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para el contenedor de productos en tiempo real */
+.realTimeProducts {
+  margin-bottom: 30px;
+}
+
+.realTimeProductContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.realTimeProductContainer .cart {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.realTimeProductContainer .cart p {
+  margin: 5px 0;
+}
+
+/* Estilos para la tarjeta de agregar producto */
+.addProduct {
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.addForm {
+  padding: 0;
+}
+
+.addForm label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.addForm input[type="text"],
+.addForm input[type="number"],
+.addForm textarea {
+  width: calc(100% - 12px);
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.addForm textarea {
+  resize: vertical;
+}
+
+.addForm button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.addForm button:hover {
+  background-color: #45a049;
 }

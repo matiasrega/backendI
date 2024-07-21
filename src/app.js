@@ -42,4 +42,8 @@ socketServer.on("connection", async (socket) => {
   //console.log(productList);
   socket.emit("home", productList);
   socket.emit("realTimeProducts", productList);
+  socket.on("newProduct", async (product) => {
+    await productManager.addProduct(product);
+    socketServer.emit("reatTimeProducts", productList);
+  });
 });
