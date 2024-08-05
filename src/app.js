@@ -31,15 +31,13 @@ const httpServer = app.listen(8080, () => {
   console.log("Servidor dado de alta");
 });
 
-export const socketServer = new Server(httpServer); // exporto para utilizar en router
+export const socketServer = new Server(httpServer);
 
-//Vista desde el Servidor
 socketServer.on("connection", async (socket) => {
   console.log("Nuevo socket conectado");
   console.log("ID SOCKET CONECTADO: " + socket.id);
   console.log("Conexiones: " + socketServer.engine.clientsCount);
   const productList = await productManager.getProductList();
-  //console.log(productList);
   socket.emit("home", productList);
   socket.emit("realTimeProducts", productList);
   socket.on("newProduct", async (product) => {

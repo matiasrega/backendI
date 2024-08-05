@@ -1,4 +1,4 @@
-const socket = io(); // Configuracion del cliente
+const socket = io();
 
 const realTimeProductContainer = document.querySelector(
   ".realTimeProductContainer"
