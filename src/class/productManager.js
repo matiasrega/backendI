@@ -55,7 +55,7 @@ class ProductManager {
     this.productList = this.productList.filter((product) => product.id != id);
     if (this.productList.length < initialLength) {
       await this.saveProductListChange();
-      return true; // Indicar que se eliminó correctamente
+      return true;
     } else {
       throw new Error("Producto no encontrado");
     }
@@ -84,14 +84,16 @@ class ProductManager {
     }
   }
 
-  async updateProductById(id, updatedProduct) {
+  async updateProductById(updatedProduct) {
     await this.getProductList();
-    const index = this.productList.findIndex((product) => product.id == id);
+    const index = this.productList.findIndex(
+      (product) => product.id == updatedProduct.id
+    );
     if (index !== -1) {
       this.productList[index] = {
         ...this.productList[index],
         ...updatedProduct,
-        id: parseInt(id),
+        id: parseInt(updatedProduct.id),
       };
       await this.saveProductListChange();
       return this.productList[index];

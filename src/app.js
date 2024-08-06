@@ -11,17 +11,14 @@ import ProductManager from "./class/productManager.js";
 const app = express();
 const productManager = new ProductManager(__dirname + "/data/product.json");
 
-//HANDLEBARS
 app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 
-//MIDDLEWARES
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 
-//RUTAS
 app.use("/api/products", ProductRoute);
 app.use("/api/carts", CartRoute);
 app.use("/", ViewRoutes);
@@ -31,25 +28,53 @@ const httpServer = app.listen(8080, () => {
   console.log("Servidor dado de alta");
 });
 
-export const socketServer = new Server(httpServer);
+const socketServer = new Server(httpServer);
 
 socketServer.on("connection", async (socket) => {
-  console.log("Nuevo socket conectado");
-  console.log("ID SOCKET CONECTADO: " + socket.id);
-  console.log("Conexiones: " + socketServer.engine.clientsCount);
   const productList = await productManager.getProductList();
   socket.emit("home", productList);
   socket.emit("realTimeProducts", productList);
+
   socket.on("newProduct", async (product) => {
-    await productManager.addProduct(product);
-    socketServer.emit("reatTimeProducts", productList);
+    try {
+      await productManager.addProduct(product);
+      const updatedProductList = await productManager.getProductList();
+      socketServer.emit("realTimeProducts", updatedProductList);
+    } catch (error) {
+      console.error("Error adding product:", error);
+    }
   });
-  socket.on("deleteProduct", async (product) => {
-    await productManager.deleteProductById(product);
-    socketServer.emit("reatTimeProducts", productList);
+
+  socket.on("deleteProduct", async (productId) => {
+    try {
+      await productManager.deleteProductById(productId);
+      const updatedProductList = await productManager.getProductList();
+      socketServer.emit("realTimeProducts", updatedProductList);
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
   });
-  socket.on("deleteAllProduct", async (product) => {
-    await productManager.deleteAllProductById(product);
-    socketServer.emit("reatTimeProducts", productList);
+
+  socket.on("deleteAllProducts", async () => {
+    try {
+      await productManager.deleteAllProductById();
+      const updatedProductList = await productManager.getProductList();
+      socketServer.emit("realTimeProducts", updatedProductList);
+    } catch (error) {
+      console.error("Error deleting all products:", error);
+    }
+  });
+
+  socket.on("updateProductById", async (updatedProduct) => {
+    try {
+      console.log("Updating product with ID:", updatedProduct.id);
+      const updatedProductData = await productManager.updateProductById(
+        updatedProduct
+      );
+      const updatedProductList = await productManager.getProductList();
+      socketServer.emit("realTimeProducts", updatedProductList);
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
   });
 });

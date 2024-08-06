@@ -4,8 +4,12 @@ const realTimeProductContainer = document.querySelector(
   ".realTimeProductContainer"
 );
 
+let productsData = [];
+
 socket.on("realTimeProducts", (data) => {
   realTimeProductContainer.innerHTML = "";
+
+  productsData = data;
 
   data.forEach((product) => {
     const div = document.createElement("div");
@@ -48,10 +52,19 @@ socket.on("realTimeProducts", (data) => {
       socket.emit("deleteAllProduct", product.id);
     });
 
+    const updateButton = document.createElement("button");
+    updateButton.innerText = "Modificar";
+    updateButton.classList.add("updateButton");
+    updateButton.addEventListener("click", () => {
+      modifyProduct(product.id);
+      console.log("ID del producto a modificar:", product.id);
+    });
+
     const buttonContainer = document.createElement("div");
     buttonContainer.classList.add("button-container");
     buttonContainer.appendChild(deleteButtonOne);
     buttonContainer.appendChild(deleteButtonAll);
+    buttonContainer.appendChild(updateButton);
 
     div.appendChild(title);
     div.appendChild(description);
@@ -64,6 +77,49 @@ socket.on("realTimeProducts", (data) => {
     realTimeProductContainer.appendChild(div);
   });
 });
+
+const modifyProduct = (productId) => {
+  const product = productsData.find((product) => product.id == productId);
+
+  if (!product) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Producto no encontrado.",
+    });
+    return;
+  }
+
+  Swal.fire({
+    title: `Modificar Producto: ${product.title}`,
+    html:
+      `<input id="swal-title" class="swal2-input" placeholder="Título" value="${product.title}">` +
+      `<input id="swal-description" class="swal2-input" placeholder="Descripción" value="${product.description}">` +
+      `<input id="swal-code" class="swal2-input" placeholder="Código" value="${product.code}">` +
+      `<input id="swal-price" class="swal2-input" placeholder="Precio" value="${product.price}">` +
+      `<input id="swal-stock" class="swal2-input" placeholder="Stock" value="${product.stock}">` +
+      `<input id="swal-category" class="swal2-input" placeholder="Categoría" value="${product.category}">`,
+    showCancelButton: true,
+    confirmButtonText: "Guardar cambios",
+    cancelButtonText: "Cancelar",
+    preConfirm: () => {
+      return {
+        id: productId,
+        title: document.getElementById("swal-title").value,
+        description: document.getElementById("swal-description").value,
+        code: document.getElementById("swal-code").value,
+        price: document.getElementById("swal-price").value,
+        stock: document.getElementById("swal-stock").value,
+        category: document.getElementById("swal-category").value,
+      };
+    },
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const updatedProduct = result.value;
+      socket.emit("updateProductById", updatedProduct);
+    }
+  });
+};
 
 const addProduct = () => {
   const title = document.getElementById("title").value;
